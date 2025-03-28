@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to create a resource card
     function createResourceCard(resource) {
         return `
-            <div class="resource-card" onclick="window.location.href='${resource.url}'">
+            <div class="resource-card" onclick="window.open('${resource.url}', '_blank')">
                 <div class="resource-icon"><i class="${resource.icon}"></i></div>
                 <h3>${resource.title}</h3>
                 <p>${resource.description}</p>

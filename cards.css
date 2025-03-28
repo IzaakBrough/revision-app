@@ -1,9 +1,25 @@
 /* Styles specific to the flashcards page */
 
 
-/* New class for the navigation row with three columns */
+/* Updated nav-row to use simpler layout */
+.nav-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    gap: 15px;
+}
 
-
+/* Button group styling */
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    grid-column: 2;
+    align-items: center;
+    position: relative; /* This helps with dropdown positioning */
+}
 
 /* Container styling for cards page */
 #app {
@@ -135,18 +151,355 @@
     gap: 15px;
     margin-top: 20px;
     align-items: center;
+    justify-content: center;
 }
 
-/* Adjust action button for alignment */
+.export-import-controls {
+    margin-top: 10px;
+}
+
+/* Improved action button styling */
 .action-button {
-    grid-column: 2;
+    background-color: #3a5a12;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-button:hover {
+    background-color: #4d7719;
+    transform: translateY(-2px);
+}
+
+.action-button:active {
+    transform: translateY(1px);
+}
+
+/* Dropdown styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: white;
+    min-width: 250px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000; /* Increased z-index to ensure it's above other elements */
+    overflow: hidden;
+}
+
+.dropdown-content.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f9f9f9;
+}
+
+.dropdown-item span {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.dropdown-item small {
+    display: block;
+    color: #666;
+    font-size: 0.8rem;
+}
+
+#drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+    transition: all 0.3s;
+}
+
+#drop-area.highlight {
+    border-color: #3a5a12;
+    background-color: rgba(58, 90, 18, 0.1);
+}
+
+#drop-area p {
     margin: 0;
-    justify-self: center;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Collection select styling to match button height */
+.collection-select {
+    height: 40px;
+    padding: 0 12px;
+    grid-column: 3;
+    justify-self: end;
+}
+
+/* Flashcard list styling */
+#flashcard-list {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+#flashcard-list-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+    padding-bottom: 20px; /* Add padding at the bottom to prevent cut-off */
+}
+
+/* Editable card styling */
+.editable-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s;
+    overflow: visible; /* Change from hidden to visible to prevent content cut-off */
+    margin-bottom: 10px; /* Add margin to separate cards better */
+    position: relative; /* Ensure proper positioning context */
+}
+
+.editable-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-view {
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+}
+
+.card-question {
+    font-weight: bold;
+    color: #3a5a12;
+    margin-right: 20px;
+    flex: 1 1 45%;
+    min-width: 200px;
+}
+
+.card-answer {
+    color: #444;
+    flex: 1 1 45%;
+    min-width: 200px;
+}
+
+.collection-tag {
+    background-color: #f0f7e6;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #3a5a12;
+    margin-right: 15px;
+    align-self: flex-start;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.edit-button,
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+    background-color: #f0f7e6;
+}
+
+.delete-button:hover {
+    background-color: #ffebeb;
+}
+
+/* Card edit form */
+.card-edit-form {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    position: relative; /* Add positioning context */
+    z-index: 2; /* Ensure form appears above other elements */
+}
+
+.card-edit-form input,
+.card-edit-form select {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+    position: relative; /* Ensure buttons have proper positioning */
+    z-index: 3; /* Make buttons appear above other elements */
+}
+
+.save-button,
+.cancel-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    min-width: 80px; /* Ensure buttons have minimum width */
+}
+
+.save-button {
+    background-color: #3a5a12;
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #4b7218;
+}
+
+.cancel-button {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.cancel-button:hover {
+    background-color: #e6e6e6;
+}
+
+.empty-collection-message {
+    text-align: center;
+    color: #666;
+    padding: 30px 0;
+    font-style: italic;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     #card-container {
         height: 250px;
+    }
+
+    .nav-row {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 10px;
+    }
+    
+    .button-group {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .home-button {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: center;
+    }
+    
+    .collection-select {
+        grid-column: 1;
+        grid-row: 3;
+        justify-self: center;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .dropdown {
+        grid-column: 1;
+        grid-row: 4;
+        width: 100%;
+        justify-self: center;
+    }
+    
+    .dropdown-content {
+        left: 0;
+        right: 0;
+        width: 100%;
+        position: relative;
+    }
+
+    .card-view {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .card-question,
+    .card-answer {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .card-actions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+    
+    .collection-tag {
+        margin-bottom: 10px;
+    }
+
+    .card-edit-form {
+        padding: 12px;
+    }
+
+    .form-buttons {
+        flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+        justify-content: space-between; /* Space buttons evenly */
+    }
+
+    .save-button,
+    .cancel-button {
+        flex: 1; /* Allow buttons to take available space */
+        margin-top: 5px;
+        text-align: center;
+    }
+    
+    #flashcard-list-container {
+        max-height: 70vh; /* Use viewport height for better mobile experience */
+        padding-bottom: 60px; /* Add extra padding at the bottom on mobile */
     }
 }

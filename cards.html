@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashcards | Revision App</title>
+    <title>Revision App | Flashcards</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="cards.css">
     <script src="cards.js" defer></script>
@@ -18,7 +18,26 @@
                 <div id="home" class="home-button" onclick="window.location.href='index.html'">
                     <span>&larr; Back to Home</span>
                 </div>
-                <button id="create-card-btn" class="action-button">Add Flashcard</button>
+                <div class="button-group">
+                    <button id="create-card-btn" class="action-button">Add Flashcard</button>
+                    <button id="edit-cards-btn" class="action-button">✏️Cards</button>
+                    <div class="dropdown">
+                        <button id="data-manage-btn" class="action-button">📂 Import/Export</button>
+                        <div id="data-dropdown" class="dropdown-content">
+                            <div class="dropdown-item" id="export-option">
+                                <span>Export Cards</span>
+                                <small>Save your cards as JSON</small>
+                            </div>
+                            <div class="dropdown-item" id="import-option">
+                                <span>Import Cards</span>
+                                <small>Load cards from JSON</small>
+                            </div>
+                            <div id="drop-area">
+                                <p>Drop JSON file here to import</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <select name="collection" id="collection-select" class="collection-select">
                     <option value="" disabled>Select Collection</option>
                     <option value="all">All Cards</option>
@@ -45,6 +64,21 @@
                 <div id="message"></div>
             </div>
             
+            <div id="flashcard-list" class="option-card" style="display: none;">
+                <h2>Your Flashcards</h2>
+                <div class="form-group">
+                    <label for="edit-collection">Collection:</label>
+                    <select id="edit-collection" required>
+                        <option value="" disabled>Select Collection</option>
+                        <option value="all">All Cards</option>
+                        <!-- Will be populated dynamically -->
+                    </select>
+                </div>
+                <div id="flashcard-list-container">
+                    <!-- Flashcards will be dynamically inserted here -->
+                </div>
+            </div>
+
             <div id="card-container">
                 <div class="card">
                     <div class="card-front">
