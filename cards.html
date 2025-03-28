@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards | Revision App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cards.css">
+    <script src="cards.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Flashcards</h1>
+        <p class="tagline">Test your knowledge</p>
+        
+        <div id="app">
+            <div class="nav-row">
+                <div id="home" class="home-button" onclick="window.location.href='index.html'">
+                    <span>&larr; Back to Home</span>
+                </div>
+                <button id="create-card-btn" class="action-button">Add Flashcard</button>
+                <select name="collection" id="collection-select" class="collection-select">
+                    <option value="" disabled>Select Collection</option>
+                    <option value="all">All Cards</option>
+                </select>
+            </div>
+            
+            <div id="flashcard-form" class="option-card" style="display: none;">
+                <h2>Create a Flashcard</h2>
+                <form id="create-card-form">
+                    <div class="form-group">
+                        <input type="text" id="question" placeholder="Question" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="answer" placeholder="Answer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-collection">Collection:</label>
+                        <select id="form-collection" required>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <button type="submit" class="action-button">Add Flashcard</button>
+                </form>
+                <div id="message"></div>
+            </div>
+            
+            <div id="card-container">
+                <div class="card">
+                    <div class="card-front">
+                        <p>Click to view question</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Click to view answer</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="next-button" class="action-button">Next Card</button>
+                <p class="card-hint">Click the card to flip</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

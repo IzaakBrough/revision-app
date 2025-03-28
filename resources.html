@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revision App - Resources</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="resources.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="resources.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Computer Science Revision Resources</h1>
+        <p class="tagline">Discover more online</p>
+        
+        <div id="app">
+            <div class="nav-row">
+                <div id="home" class="home-button" onclick="window.location.href='index.html'">
+                    <span>&larr; Back to Home</span>
+                </div>
+                <div></div>
+                <select name="collection" id="collection-select" class="collection-select">
+                    <option value="" disabled>Select Subject</option>
+                    <option value="maths">Maths</option>
+                    <option value="business">Business</option>
+                    <option value="comp-sci" selected>Computer Science</option>
+                </select>
+            </div>
+            
+            <div class="resources-container">
+                <!-- Resources will be dynamically loaded by JavaScript -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
