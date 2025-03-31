@@ -10,13 +10,33 @@ body {
     overflow: hidden; /* Prevent body scrolling */
 }
 
+/* Page header styling */
+.page-header {
+    background-color: #3a5a12; /* Darker green background */
+    padding: 20px 0 15px;
+    margin-bottom: 20px;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.page-header h1 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.page-header .tagline {
+    margin-bottom: 20px;
+}
+
+/* Adjust container for the new header */
 .container {
     width: 90%;
     max-width: 1000px;
     text-align: center;
-    padding: 20px;
+    padding: 0;
     margin-top: 5px;
-    height: calc(100vh - 30px); /* Make container fill viewport height minus margins */
+    height: calc(100vh - 10px); /* Make container fill viewport height minus margins */
     display: flex;
     flex-direction: column;
     overflow: hidden; /* Prevent container scrolling */
@@ -36,6 +56,9 @@ h1 {
 }
 
 #app {
+    background-color: #5e892c;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -103,10 +126,11 @@ button:active {
 
 .nav-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    gap: 15px;
 }
 
 .home-button {
@@ -175,6 +199,10 @@ button:active {
 }
 
 @media (max-width: 768px) {
+    .page-header {
+        padding: 15px 0 10px;
+    }
+    
     .resources-container {
         flex-direction: column;
         align-items: center;

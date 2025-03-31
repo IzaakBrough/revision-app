@@ -10,17 +10,52 @@
 </head>
 <body>
     <div class="container">
-        <h1>Flashcards</h1>
-        <p class="tagline">Test your knowledge</p>
-        
-        <div id="app">
+        <div class="page-header">
+            <h1>Flashcards</h1>
+            <p class="tagline">Test your knowledge</p>
+            
             <div class="nav-row">
                 <div id="home" class="home-button" onclick="window.location.href='index.html'">
                     <span>&larr; Back to Home</span>
                 </div>
                 <div class="button-group">
                     <button id="create-card-btn" class="action-button">Add Flashcard</button>
+                    <div id="flashcard-form" class="option-card">
+                        <h2>Create a Flashcard</h2>
+                        <form id="create-card-form">
+                            <div class="form-group">
+                                <input type="text" id="question" placeholder="Question" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="answer" placeholder="Answer" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="form-collection">Collection:</label>
+                                <select id="form-collection" required>
+                                    <!-- Will be populated dynamically -->
+                                </select>
+                            </div>
+                            <button type="submit" class="action-button">Add Flashcard</button>
+                        </form>
+                        <div id="message"></div>
+                    </div>
+                    
                     <button id="edit-cards-btn" class="action-button">✏️Cards</button>
+                    <div id="flashcard-list" class="option-card">
+                        <h2>Your Flashcards</h2>
+                        <div class="form-group">
+                            <label for="edit-collection">Collection:</label>
+                            <select id="edit-collection" required>
+                                <option value="" disabled>Select Collection</option>
+                                <option value="all">All Cards</option>
+                                <!-- Will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div id="flashcard-list-container">
+                            <!-- Flashcards will be dynamically inserted here -->
+                        </div>
+                    </div>
+                    
                     <div class="dropdown">
                         <button id="data-manage-btn" class="action-button">📂 Import/Export</button>
                         <div id="data-dropdown" class="dropdown-content">
@@ -43,42 +78,9 @@
                     <option value="all">All Cards</option>
                 </select>
             </div>
-            
-            <div id="flashcard-form" class="option-card" style="display: none;">
-                <h2>Create a Flashcard</h2>
-                <form id="create-card-form">
-                    <div class="form-group">
-                        <input type="text" id="question" placeholder="Question" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="answer" placeholder="Answer" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="form-collection">Collection:</label>
-                        <select id="form-collection" required>
-                            <!-- Will be populated dynamically -->
-                        </select>
-                    </div>
-                    <button type="submit" class="action-button">Add Flashcard</button>
-                </form>
-                <div id="message"></div>
-            </div>
-            
-            <div id="flashcard-list" class="option-card" style="display: none;">
-                <h2>Your Flashcards</h2>
-                <div class="form-group">
-                    <label for="edit-collection">Collection:</label>
-                    <select id="edit-collection" required>
-                        <option value="" disabled>Select Collection</option>
-                        <option value="all">All Cards</option>
-                        <!-- Will be populated dynamically -->
-                    </select>
-                </div>
-                <div id="flashcard-list-container">
-                    <!-- Flashcards will be dynamically inserted here -->
-                </div>
-            </div>
+        </div>
 
+        <div id="app">
             <div id="card-container">
                 <div class="card">
                     <div class="card-front">

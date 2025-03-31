@@ -62,6 +62,7 @@ class FlashcardManager {
     constructor() {
         this.cards = [];
         this.collections = {};
+        this.loadFromLocalStorage();
     }
 
     addCard(card) {
@@ -70,6 +71,7 @@ class FlashcardManager {
             this.collections[card.collection] = new Collection(card.collection);
         }
         this.collections[card.collection].addCard(card);
+        this.saveToLocalStorage();
     }
 
     getCardsByCollection(collectionName) {
@@ -78,28 +80,55 @@ class FlashcardManager {
 
     updateCard(index, updatedCard) {
         if (index >= 0 && index < this.cards.length) {
-            const oldCollection = this.cards[index].collection;
+            const oldCard = this.cards[index];
+            const oldCollection = oldCard.collection;
+            
+            // Update the card in the main array
             this.cards[index] = updatedCard;
 
+            // Handle collection changes properly
             if (oldCollection === updatedCard.collection) {
+                // Same collection - directly update the card in that collection
                 const collectionCards = this.collections[oldCollection].cards;
+                
+                // Find and update the card in the collection
+                let found = false;
                 for (let i = 0; i < collectionCards.length; i++) {
-                    if (collectionCards[i] === this.cards[index] ||
-                        (collectionCards[i].question === this.cards[index].question &&
-                         collectionCards[i].answer === this.cards[index].answer)) {
+                    if (collectionCards[i].question === oldCard.question && 
+                        collectionCards[i].answer === oldCard.answer) {
                         collectionCards[i] = updatedCard;
+                        found = true;
                         break;
                     }
                 }
+                
+                // If card wasn't found, add it (shouldn't happen, but as a safety measure)
+                if (!found) {
+                    this.collections[oldCollection].addCard(updatedCard);
+                }
             } else {
-                this.removeCardFromCollection(oldCollection, index);
+                // Collection changed - remove from old and add to new
+                
+                // First, explicitly remove from old collection using the old card data
+                if (this.collections[oldCollection]) {
+                    const oldCollectionCards = this.collections[oldCollection].cards;
+                    for (let i = 0; i < oldCollectionCards.length; i++) {
+                        if (oldCollectionCards[i].question === oldCard.question && 
+                            oldCollectionCards[i].answer === oldCard.answer) {
+                            oldCollectionCards.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
 
+                // Then add to new collection
                 if (!this.collections[updatedCard.collection]) {
                     this.collections[updatedCard.collection] = new Collection(updatedCard.collection);
                 }
                 this.collections[updatedCard.collection].addCard(updatedCard);
             }
-
+            
+            this.saveToLocalStorage();
             return true;
         }
         return false;
@@ -113,7 +142,7 @@ class FlashcardManager {
             this.cards.splice(index, 1);
 
             this.removeCardFromCollection(collection, index);
-
+            this.saveToLocalStorage();
             return true;
         }
         return false;
@@ -164,10 +193,78 @@ class FlashcardManager {
                     this.addCard(card);
                 }
             });
+            
+            this.saveToLocalStorage();
         } catch (error) {
             console.error("Error importing cards:", error);
             throw error;
         }
+    }
+    
+    saveToLocalStorage() {
+        try {
+            localStorage.setItem('flashcards', JSON.stringify(this.cards));
+            localStorage.setItem('collections', JSON.stringify(
+                Object.keys(this.collections).map(key => ({
+                    name: this.collections[key].name,
+                    cardCount: this.collections[key].cards.length
+                }))
+            ));
+        } catch (error) {
+            console.error("Error saving to local storage:", error);
+        }
+    }
+    
+    loadFromLocalStorage() {
+        try {
+            const savedCards = localStorage.getItem('flashcards');
+            if (savedCards) {
+                const parsedCards = JSON.parse(savedCards);
+                
+                // Clear existing data
+                this.cards = [];
+                this.collections = {};
+                
+                // Reload from saved data
+                parsedCards.forEach(cardData => {
+                    const card = new Card(cardData.question, cardData.answer, cardData.collection);
+                    this.addCard(card);
+                });
+            } else {
+                // Initialize with default cards if no saved data
+                this.cards = [];
+                this.collections = {};
+                cards.forEach(cardData => {
+                    // Ensure proper collection name consistency (lowercase)
+                    const card = new Card(
+                        cardData.question, 
+                        cardData.answer, 
+                        cardData.collection.toLowerCase()
+                    );
+                    this.addCard(card);
+                });
+            }
+        } catch (error) {
+            console.error("Error loading from local storage:", error);
+            
+            // Fall back to default cards if there's an error
+            this.cards = [];
+            this.collections = {};
+            cards.forEach(cardData => {
+                // Ensure proper collection name consistency (lowercase)
+                const card = new Card(
+                    cardData.question, 
+                    cardData.answer, 
+                    cardData.collection.toLowerCase()
+                );
+                this.addCard(card);
+            });
+        }
+    }
+    
+    clearLocalStorage() {
+        localStorage.removeItem('flashcards');
+        localStorage.removeItem('collections');
     }
 }
 
@@ -191,11 +288,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const flashcardListContainer = document.getElementById('flashcard-list-container');
 
     const manager = new FlashcardManager();
-
-    cards.forEach(cardData => {
-        const card = new Card(cardData.question, cardData.answer, cardData.collection);
-        manager.addCard(card);
-    });
 
     function populateCollections() {
         while (collectionSelect.options.length > 2) {
@@ -266,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (collectionName === 'all') {
             currentCards = [...manager.cards];
         } else {
-            currentCards = manager.getCardsByCollection(collectionName);
+            currentCards = [...manager.getCardsByCollection(collectionName)];
         }
 
         currentCardIndex = 0;
@@ -275,6 +367,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             displayEmptyState();
         }
+        
+        // Update collection info display
+        updateCollectionInfoDisplay(collectionName);
     }
 
     function displayCard(card) {
@@ -296,26 +391,145 @@ document.addEventListener('DOMContentLoaded', function() {
         cardBack.textContent = "Create new cards to study!";
     }
 
+    // Modified function to ensure card container is always updated correctly
+    function syncCurrentCardDisplay() {
+        const currentCollectionName = collectionSelect.value;
+        
+        // First refresh the collection in case it was modified
+        if (currentCollectionName !== 'all') {
+            // Make sure we're viewing the latest version of the collection
+            const collectionCards = manager.getCardsByCollection(currentCollectionName);
+            
+            // Reassign to ensure we have the latest version
+            currentCards = [...collectionCards];
+        } else {
+            // For "all" cards, always get a fresh copy
+            currentCards = [...manager.cards];
+        }
+        
+        // If we have cards, but our index is now invalid, reset it
+        if (currentCards.length > 0) {
+            if (currentCardIndex >= currentCards.length) {
+                currentCardIndex = 0;
+            }
+            
+            // Display the current card
+            displayCard(currentCards[currentCardIndex]);
+        } else {
+            // No cards to display
+            displayEmptyState();
+        }
+        
+        // Update collection info display
+        updateCollectionInfoDisplay(currentCollectionName);
+    }
+    
+    // Extract collection info display update to a separate function
+    function updateCollectionInfoDisplay(collectionName) {
+        const cardCount = collectionName === 'all' ? 
+            manager.cards.length : 
+            (manager.collections[collectionName]?.cards.length || 0);
+            
+        // Update or create the collection info element
+        let countDisplay = cardContainer.querySelector('.collection-info');
+        if (!countDisplay) {
+            countDisplay = document.createElement('div');
+            countDisplay.className = 'collection-info';
+            cardContainer.appendChild(countDisplay);
+        }
+        
+        // Update the text content
+        countDisplay.textContent = `${collectionName === 'all' ? 'All cards' : collectionName}: ${cardCount} cards`;
+    }
+
     loadCardsFromCollection('programming');
     collectionSelect.value = 'programming';
 
-    createCardBtn.addEventListener('click', function() {
-        if (flashcardForm.style.display === 'none') {
-            flashcardForm.style.display = 'block';
-            createCardBtn.textContent = 'Hide Form';
-        } else {
-            flashcardForm.style.display = 'none';
-            createCardBtn.textContent = 'Add Flashcard';
+    // Function to close all dropdown menus and reset button texts
+    function closeAllDropdowns() {
+        flashcardForm.classList.remove('show');
+        flashcardList.classList.remove('show');
+        dataDropdown.classList.remove('show');
+        
+        // Reset button texts
+        createCardBtn.textContent = 'Add Flashcard';
+        editCardsBtn.textContent = '✏️Cards';
+    }
+
+    createCardBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Close other dropdowns first
+        flashcardList.classList.remove('show');
+        dataDropdown.classList.remove('show');
+        
+        // Reset other button text
+        editCardsBtn.textContent = '✏️Cards';
+        
+        // Toggle this dropdown
+        flashcardForm.classList.toggle('show');
+        
+        // Update button text based on visibility
+        createCardBtn.textContent = flashcardForm.classList.contains('show') ? 'Hide Form' : 'Add Flashcard';
+    });
+
+    editCardsBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Close other dropdowns first
+        flashcardForm.classList.remove('show');
+        dataDropdown.classList.remove('show');
+        
+        // Reset other button text
+        createCardBtn.textContent = 'Add Flashcard';
+        
+        // Toggle this dropdown
+        flashcardList.classList.toggle('show');
+        
+        // Update button text based on visibility
+        editCardsBtn.textContent = flashcardList.classList.contains('show') ? 'Hide ✏️Cards' : '✏️Cards';
+        
+        // When showing the cards list, adjust the container height
+        if (flashcardList.classList.contains('show')) {
+            setTimeout(adjustFlashcardListHeight, 10);
         }
     });
 
-    editCardsBtn.addEventListener('click', function() {
-        if (flashcardList.style.display === 'none') {
-            flashcardList.style.display = 'block';
-            editCardsBtn.textContent = 'Hide ✏️Cards';
-        } else {
-            flashcardList.style.display = 'none';
-            editCardsBtn.textContent = '✏️Cards';
+    dataManageBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Close other dropdowns first
+        flashcardForm.classList.remove('show');
+        flashcardList.classList.remove('show');
+        
+        // Toggle the dropdown visibility
+        dataDropdown.classList.toggle('show');
+        
+        // Reset other buttons text
+        createCardBtn.textContent = 'Add Flashcard';
+        editCardsBtn.textContent = '✏️Cards';
+    });
+
+    document.addEventListener('click', function(e) {
+        // If clicking outside any of the dropdowns or their toggle buttons, close all dropdowns
+        if (!dataManageBtn.contains(e.target) && 
+            !dataDropdown.contains(e.target) && 
+            !createCardBtn.contains(e.target) && 
+            !flashcardForm.contains(e.target) &&
+            !editCardsBtn.contains(e.target) && 
+            !flashcardList.contains(e.target)) {
+            
+            closeAllDropdowns();
+        }
+    });
+
+    // Add an event listener for the escape key to close all dropdowns
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAllDropdowns();
         }
     });
 
@@ -332,7 +546,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     collectionSelect.addEventListener('change', function() {
+        // Get fresh collection data when switching
         loadCardsFromCollection(this.value);
+        
+        // Keep edit view in sync if it's visible
+        if (flashcardList.classList.contains('show')) {
+            editCollection.value = this.value;
+            displayCardsForEdit(this.value);
+        }
     });
 
     createCardForm.addEventListener('submit', function(e) {
@@ -355,35 +576,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (questionInput.value && answerInput.value) {
-            const newCard = new Card(questionInput.value, answerInput.value, collectionName);
+            const newCard = new Card(questionInput.value, answerInput.value, collectionName.toLowerCase());
             manager.addCard(newCard);
-
-            // Update the main cards view
-            if (collectionSelect.value === 'all' || collectionSelect.value === collectionName) {
-                currentCards.push(newCard);
-                if (currentCards.length === 1) {
-                    displayCard(newCard);
-                }
-            }
 
             // Update collections dropdowns
             populateCollections();
-            
-            // Load the new card's collection in the main view
-            if (document.querySelector(`#collection-select option[value="${collectionName}"]`)) {
-                collectionSelect.value = collectionName;
-                loadCardsFromCollection(collectionName);
-            }
             
             // Update the edit cards view and show it if hidden
             editCollection.value = collectionName;
             displayCardsForEdit(collectionName);
             
-            if (flashcardList.style.display === 'none') {
-                flashcardList.style.display = 'block';
-                editCardsBtn.textContent = 'Hide ✏️Cards';
+            // Update main card view - using our new sync function instead of directly modifying currentCards
+            if (collectionSelect.value === 'all' || collectionSelect.value === collectionName) {
+                syncCurrentCardDisplay();
             }
-
+            
             messageDiv.textContent = "Flashcard added successfully!";
             messageDiv.style.color = "green";
 
@@ -399,33 +606,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Hide the form after a delay
             setTimeout(() => {
-                flashcardForm.style.display = 'none';
+                flashcardForm.classList.remove('show');
                 createCardBtn.textContent = 'Add Flashcard';
                 messageDiv.textContent = "";
             }, 2000);
-        }
-    });
-
-    dataManageBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Toggle the dropdown visibility
-        if (dataDropdown.classList.contains('show')) {
-            dataDropdown.classList.remove('show');
-        } else {
-            dataDropdown.classList.add('show');
-        }
-        
-        // For debugging
-        console.log('Dropdown toggled, current state:', dataDropdown.classList.contains('show'));
-    });
-
-    document.addEventListener('click', function(e) {
-        if (dataDropdown.classList.contains('show') &&
-            !dataManageBtn.contains(e.target) &&
-            !dataDropdown.contains(e.target)) {
-            dataDropdown.classList.remove('show');
         }
     });
 
@@ -559,30 +743,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
 
-    function displayCardsForEdit(collectionName) {
-        flashcardListContainer.innerHTML = '';
-
-        let cardsToDisplay = [];
-        if (collectionName === 'all') {
-            cardsToDisplay = [...manager.cards];
-        } else {
-            cardsToDisplay = manager.getCardsByCollection(collectionName);
-        }
-
-        if (cardsToDisplay.length === 0) {
-            const emptyMessage = document.createElement('p');
-            emptyMessage.className = 'empty-collection-message';
-            emptyMessage.textContent = 'No flashcards in this collection.';
-            flashcardListContainer.appendChild(emptyMessage);
-            return;
-        }
-
-        cardsToDisplay.forEach((card, index) => {
-            const cardElement = createEditableCardElement(card, index);
-            flashcardListContainer.appendChild(cardElement);
-        });
-    }
-
     function createEditableCardElement(card, index) {
         const cardElement = document.createElement('div');
         cardElement.className = 'editable-card';
@@ -645,6 +805,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const collectionSelect = document.createElement('select');
         collectionSelect.className = 'edit-collection';
 
+        // Add collection options
         Object.keys(manager.collections).forEach(collName => {
             const option = document.createElement('option');
             option.value = collName;
@@ -652,6 +813,7 @@ document.addEventListener('DOMContentLoaded', function() {
             collectionSelect.appendChild(option);
         });
 
+        // Set current collection as selected
         if (card.collection && collectionSelect.querySelector(`option[value="${card.collection}"]`)) {
             collectionSelect.value = card.collection;
         }
@@ -679,72 +841,213 @@ document.addEventListener('DOMContentLoaded', function() {
         cardElement.appendChild(cardView);
         cardElement.appendChild(editForm);
 
-        editButton.addEventListener('click', function() {
+        // Edit button functionality
+        editButton.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event bubbling
             cardView.style.display = 'none';
             editForm.style.display = 'block';
         });
 
-        cancelButton.addEventListener('click', function() {
+        // Cancel button functionality
+        cancelButton.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event bubbling
             editForm.style.display = 'none';
             cardView.style.display = 'flex';
         });
 
-        deleteButton.addEventListener('click', function() {
+        // Delete button functionality with improved syncing
+        deleteButton.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event bubbling
+            
             if (confirm('Are you sure you want to delete this flashcard?')) {
                 const cardIndex = parseInt(cardElement.dataset.index);
-                if (manager.deleteCard(cardIndex)) {
+                
+                // Get real index in the main cards array
+                let realIndex = cardIndex;
+                const currentCollection = editCollection.value;
+                
+                if (currentCollection !== 'all') {
+                    // Find the index in the main cards array
+                    const card = manager.getCardsByCollection(currentCollection)[cardIndex];
+                    realIndex = manager.cards.findIndex(c => 
+                        c.question === card.question && 
+                        c.answer === card.answer && 
+                        c.collection === card.collection
+                    );
+                }
+                
+                if (manager.deleteCard(realIndex)) {
                     cardElement.remove();
-
-                    const currentCollection = editCollection.value;
-                    displayCardsForEdit(currentCollection);
-
-                    if (collectionSelect.value === currentCollection ||
-                        collectionSelect.value === 'all') {
-                        loadCardsFromCollection(collectionSelect.value);
-                    }
-
+                    
+                    // Update the main card view using the sync function
+                    syncCurrentCardDisplay();
+                    
                     messageDiv.textContent = "Flashcard deleted successfully!";
                     messageDiv.style.color = "green";
                     setTimeout(() => { messageDiv.textContent = ""; }, 3000);
+                    
+                    // Refresh the edit cards view
+                    displayCardsForEdit(currentCollection);
+                    
+                    // Check if no more cards left in this collection
+                    if (flashcardListContainer.children.length === 0) {
+                        const emptyMessage = document.createElement('p');
+                        emptyMessage.className = 'empty-collection-message';
+                        emptyMessage.textContent = 'No flashcards in this collection.';
+                        flashcardListContainer.appendChild(emptyMessage);
+                    }
                 }
             }
         });
 
+        // Submit form functionality with improved card-container updating
         editForm.addEventListener('submit', function(e) {
             e.preventDefault();
-
+            e.stopPropagation(); // Prevent event bubbling
+            
             const cardIndex = parseInt(cardElement.dataset.index);
-            const updatedCard = new Card(
-                questionInput.value,
-                answerInput.value,
-                collectionSelect.value
-            );
-
-            if (manager.updateCard(cardIndex, updatedCard)) {
-                questionView.textContent = updatedCard.question;
-                answerView.textContent = updatedCard.answer;
-                collectionTag.textContent = updatedCard.collection;
-
-                editForm.style.display = 'none';
-                cardView.style.display = 'flex';
-
-                populateCollections();
-
-                if (collectionSelect.value === updatedCard.collection ||
-                    collectionSelect.value === 'all') {
-                    loadCardsFromCollection(collectionSelect.value);
+            
+            // Get real index in the main cards array
+            let realIndex = cardIndex;
+            const currentEditCollection = editCollection.value;
+            
+            if (currentEditCollection !== 'all') {
+                // Find the index in the main cards array
+                const collectionCards = manager.getCardsByCollection(currentEditCollection);
+                if (cardIndex < collectionCards.length) {
+                    const cardToUpdate = collectionCards[cardIndex];
+                    
+                    // Find the corresponding card in the main array
+                    realIndex = manager.cards.findIndex(c => 
+                        c.question === cardToUpdate.question && 
+                        c.answer === cardToUpdate.answer && 
+                        c.collection === cardToUpdate.collection
+                    );
                 }
-
-                messageDiv.textContent = "Flashcard updated successfully!";
-                messageDiv.style.color = "green";
+            }
+            
+            if (realIndex >= 0 && realIndex < manager.cards.length) {
+                // Store the original card info for comparison
+                const originalCard = manager.cards[realIndex];
+                
+                // Create the updated card (ensuring lowercase collection name)
+                const updatedCard = new Card(
+                    questionInput.value,
+                    answerInput.value,
+                    collectionSelect.value.toLowerCase()
+                );
+                
+                // Update the card in the manager
+                if (manager.updateCard(realIndex, updatedCard)) {
+                    // Update the card view
+                    questionView.textContent = updatedCard.question;
+                    answerView.textContent = updatedCard.answer;
+                    collectionTag.textContent = updatedCard.collection;
+                    
+                    // Hide the edit form and show the card view
+                    editForm.style.display = 'none';
+                    cardView.style.display = 'flex';
+                    
+                    // Refresh the collections dropdown
+                    populateCollections();
+                    
+                    // Update card display in the main view
+                    syncCurrentCardDisplay();
+                    
+                    // If card moved to a different collection, refresh the edit view
+                    if (originalCard.collection !== updatedCard.collection) {
+                        // We need to redisplay the edit cards for the current filter
+                        displayCardsForEdit(currentEditCollection);
+                    }
+                    
+                    messageDiv.textContent = "Flashcard updated successfully!";
+                    messageDiv.style.color = "green";
+                    setTimeout(() => { messageDiv.textContent = ""; }, 3000);
+                }
+            } else {
+                messageDiv.textContent = "Error updating card: Card not found";
+                messageDiv.style.color = "red";
                 setTimeout(() => { messageDiv.textContent = ""; }, 3000);
-
-                const currentCollection = editCollection.value;
-                displayCardsForEdit(currentCollection);
             }
         });
 
         return cardElement;
+    }
+
+    // Add a resize handler to adjust the flashcard list container height
+    function adjustFlashcardListHeight() {
+        if (flashcardList.classList.contains('show')) {
+            const flashcardListRect = flashcardList.getBoundingClientRect();
+            const heading = flashcardList.querySelector('h2');
+            const formGroup = flashcardList.querySelector('.form-group');
+            
+            const headingHeight = heading ? heading.offsetHeight : 0;
+            const formGroupHeight = formGroup ? formGroup.offsetHeight : 0;
+            
+            // Calculate the available height, ensuring we have enough space
+            const availableHeight = Math.max(
+                300, // Minimum height
+                flashcardListRect.height - headingHeight - formGroupHeight - 30 // 30px buffer
+            );
+            
+            // Set the height of the cards container
+            flashcardListContainer.style.height = `${availableHeight}px`;
+            
+            // Ensure proper scrolling behaviors
+            flashcardListContainer.style.overflowY = 'auto';
+            flashcardListContainer.style.overflowX = 'hidden';
+            
+            // Scroll back to top to avoid any potential scroll positioning issues
+            flashcardListContainer.scrollTop = 0;
+        }
+    }
+
+    // Handle window resize events with debouncing for better performance
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            if (flashcardList.classList.contains('show')) {
+                adjustFlashcardListHeight();
+            }
+        }, 100); // 100ms debounce
+    });
+
+    // Add observer to handle dynamic content changes in the header/form
+    const resizeObserver = new ResizeObserver(entries => {
+        if (flashcardList.classList.contains('show')) {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(adjustFlashcardListHeight, 100); // Debounced response
+        }
+    });
+
+    function displayCardsForEdit(collectionName) {
+        flashcardListContainer.innerHTML = '';
+
+        let cardsToDisplay = [];
+        if (collectionName === 'all') {
+            cardsToDisplay = [...manager.cards];
+        } else {
+            cardsToDisplay = manager.getCardsByCollection(collectionName);
+        }
+
+        if (cardsToDisplay.length === 0) {
+            const emptyMessage = document.createElement('p');
+            emptyMessage.className = 'empty-collection-message';
+            emptyMessage.textContent = 'No flashcards in this collection.';
+            flashcardListContainer.appendChild(emptyMessage);
+            return;
+        }
+
+        cardsToDisplay.forEach((card, index) => {
+            const cardElement = createEditableCardElement(card, index);
+            flashcardListContainer.appendChild(cardElement);
+        });
+        
+        // Adjust the container height after cards are added
+        if (flashcardList.classList.contains('show')) {
+            setTimeout(adjustFlashcardListHeight, 10);
+        }
     }
 
     editCollection.addEventListener('change', function() {
@@ -752,4 +1055,38 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     displayCardsForEdit('all');
+
+    // Add a reset functionality to data dropdown
+    const resetOption = document.createElement('div');
+    resetOption.className = 'dropdown-item';
+    resetOption.id = 'reset-option';
+    resetOption.innerHTML = `
+        <span>Reset Flashcards</span>
+        <small>Clear all cards and restore defaults</small>
+    `;
+    
+    dataDropdown.appendChild(resetOption);
+    
+    resetOption.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        if (confirm('Are you sure you want to reset all flashcards? This will delete all your custom cards and restore the default set.')) {
+            manager.clearLocalStorage();
+            
+            // Reload the page to reinitialize everything
+            window.location.reload();
+        }
+    });
+
+    // Add CSS for collection info display
+    const style = document.createElement('style');
+    style.textContent = `
+        .collection-info {
+            margin-top: 10px;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+    `;
+    document.head.appendChild(style);
 });
