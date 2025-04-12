@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const resources = {
         'comp-sci': [
             {
+                icon: 'fas fa-laptop',
+                title: 'Ada computer science',
+                description: 'A comprehensive resource for A-Level Computer Science, including past papers, mark schemes, and revision notes.',
+                url: 'https://www.adacomputerscience.org/'
+            },
+            {
                 icon: 'fas fa-book-open',
                 title: 'Physics & Maths Tutor (PMT)',
                 description: 'Comprehensive revision materials including past papers, mark schemes and revision notes for OCR A-Level Computer Science.',
@@ -22,15 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             {
                 icon: 'fas fa-chalkboard-teacher',
-                title: 'Computer Science Guru',
-                description: 'Detailed revision notes and resources for Computer Science students.',
-                url: 'https://www.computerscience.gcse.guru/'
+                title: '101 Computing',
+                description: 'A resource for teachers and students with a focus on practical programming skills and theory.',
+                url: 'https://www.101computing.net/ocr-h446-computer-science-a-level/'
             },
             {
                 icon: 'fas fa-code',
                 title: 'Teach Computer Science',
                 description: 'Comprehensive resources covering all aspects of Computer Science curricula.',
-                url: 'https://teachcomputerscience.com/'
+                url: 'https://teachcomputerscience.com/a-level/'
             }
         ],
         'maths': [
@@ -44,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 icon: 'fas fa-square-root-alt',
                 title: 'ExamSolutions',
                 description: 'Video tutorials and papers for mathematics revision at different levels.',
-                url: 'https://www.examsolutions.net/'
+                url: 'https://app.examsolutions.net/courses/A2%20Pure?tab=overview&useWpRedirect=true&examBoard=Edexcel'
             },
             {
                 icon: 'fas fa-book',
@@ -63,20 +69,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: 'HegartyMaths',
                 description: 'Interactive video lessons and quizzes covering all maths topics from KS3 to A-Level.',
                 url: 'https://hegartymaths.com/'
+            },
+            {
+                icon: 'fas fa-graduation-cap',
+                title: 'madasmaths',
+                description: 'Free Resources for Students and Teachers of Mathematics.',
+                url: 'https://www.madasmaths.com/'
             }
+
         ],
         'business': [
             {
                 icon: 'fas fa-chart-line',
                 title: 'Tutor2u Business',
                 description: 'Leading provider of Business Studies teaching resources and revision materials.',
-                url: 'https://www.tutor2u.net/business'
+                url: 'https://www.tutor2u.net/business/store/revision-guides'
             },
             {
                 icon: 'fas fa-book',
                 title: 'Business Studies Notes',
                 description: 'Comprehensive revision notes for A-Level Business Studies students.',
-                url: 'https://businessrevisionotes.co.uk/'
+                url: 'https://www.savemyexams.com/a-level/business/edexcel/17/revision-notes/'
             },
             {
                 icon: 'fas fa-briefcase',
@@ -89,6 +102,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: 'TakingTheBiz',
                 description: 'YouTube channel with tutorials covering the Business Studies curriculum.',
                 url: 'https://www.youtube.com/c/takingthebiz'
+            },
+            {
+                icon: 'fas fa-chart-pie',
+                title: 'BBC Business',
+                description: 'Latest business news and analysis from the BBC.',
+                url: 'https://www.bbc.co.uk/news/business'
             },
             {
                 icon: 'fas fa-newspaper',

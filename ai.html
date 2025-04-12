@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revision App | AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ai.css">
+    <script src="ai.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>AI Assistant</h1>
+            <p class="tagline tagline-small">Your study companion</p>
+            
+            <div class="nav-row">
+                <div id="home" class="home-button" onclick="window.location.href='index.html'">
+                    <span>&larr; Back to Home</span>
+                </div>
+                <div class="button-group">
+                    <div class="topic-buttons">
+                        <button class="topic-button action-button" data-topic="explain">Explain Topic</button>
+                        <button class="topic-button action-button" data-topic="quiz">Quiz Me</button>
+                        <button class="topic-button action-button" data-topic="summarize">Summarize</button>
+                        <button class="topic-button action-button" data-topic="example">Show Example</button>
+                    </div>
+                    <button id="settings-toggle" class="action-button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="app">
+            <div id="ai-settings">
+                <h3>AI Assistant Settings</h3>
+                <div class="settings-row">
+                    <label for="subject-select">Subject Focus:</label>
+                    <select id="subject-select">
+                        <option value="general">General</option>
+                        <option value="math">Mathematics</option>
+                        <option value="comp-sci">Computer Science</option>
+                        <option value="business">Business Studies</option>
+                        <option value="programming">Programming</option>
+                    </select>
+                </div>
+                <div class="settings-row">
+                    <label for="difficulty-select">Difficulty:</label>
+                    <select id="difficulty-select">
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate" selected>Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="chat-container">
+                <div id="chat-messages">
+                    <div class="message ai-message">
+                        Hi there! I'm your AI study assistant. How can I help you learn today?
+                    </div>
+                </div>
+                <div id="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Type your question or topic...">
+                    <button id="send-button" class="action-button">Send</button>
+                    <button id="clear-chat">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

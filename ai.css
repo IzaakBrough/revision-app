@@ -1,0 +1,359 @@
+/* Styles specific to the AI page */
+
+/* Button group styling */
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    grid-column: 2;
+    align-items: center;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+/* Container styling for AI page */
+#app {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Small tagline style */
+.tagline-small {
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+/* Chat container styling */
+#chat-container {
+    width: 100%;
+    max-width: 800px;
+    height: 450px; /* Increased height since we removed settings button from main area */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0 20px;
+    overflow: hidden;
+}
+
+/* Chat messages area */
+#chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #f9f9f9;
+}
+
+/* Input area styling */
+#chat-input-area {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #eee;
+    background-color: white;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+    margin-right: 10px;
+}
+
+#chat-input:focus {
+    border-color: #3a5a12;
+    box-shadow: 0 0 0 2px rgba(58, 90, 18, 0.1);
+}
+
+/* Send button styled as action button */
+#send-button {
+    padding: 0 20px;
+    background-color: #3a5a12;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#send-button:hover {
+    background-color: #4d7719;
+    transform: translateY(-2px);
+}
+
+#send-button:active {
+    transform: translateY(1px);
+}
+
+/* Message styling */
+.message {
+    padding: 12px 15px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: #e1f0cc;
+    color: #333;
+}
+
+.ai-message {
+    align-self: flex-start;
+    background-color: white;
+    color: #333;
+    border: 1px solid #eee;
+}
+
+/* Message with typing animation */
+.typing {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #3a5a12;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: typing-animation 1s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing-animation {
+    0%, 100% { opacity: 0.6; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-5px); }
+}
+
+/* Topic buttons styling */
+.topic-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.topic-button {
+    padding: 8px 15px;
+    background-color: #3a5a12;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+}
+
+/* Info panel styling */
+.info-panel {
+    background-color: #f0f7e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    width: 100%;
+    max-width: 800px;
+}
+
+.info-panel h3 {
+    color: #3a5a12;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.info-panel p {
+    color: #444;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Settings panel */
+#ai-settings {
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+    position: relative;
+    z-index: 100;
+}
+
+#ai-settings h3 {
+    color: #3a5a12;
+    margin-top: 0;
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.settings-row label {
+    margin-right: 10px;
+    min-width: 120px;
+}
+
+.settings-row select,
+.settings-row input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+}
+
+/* Message with formatted code */
+.message pre {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+.message code {
+    font-family: monospace;
+}
+
+/* Clear chat button - also styled as action button but with different colors */
+#clear-chat {
+    background-color: transparent;
+    color: #666;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+    margin-left: 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#clear-chat:hover {
+    background-color: #f9f9f9;
+    color: #333;
+    transform: translateY(-2px);
+}
+
+#clear-chat:active {
+    transform: translateY(1px);
+}
+
+/* Settings toggle button styled as action button */
+#settings-toggle {
+    background-color: #3a5a12;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #chat-container {
+        height: 400px;
+    }
+
+    .nav-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .home-button {
+        grid-column: 1;
+        justify-self: center;
+    }
+    
+    .message {
+        max-width: 90%;
+    }
+
+    .button-group {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .topic-buttons {
+        flex-direction: row;
+        padding: 0;
+        margin: 5px 0;
+        width: 100%;
+    }
+    
+    .topic-button {
+        font-size: 14px;
+        padding: 6px 10px;
+        flex: 1;
+        text-align: center;
+        min-width: 0;
+        height: 36px;
+    }
+    
+    #settings-toggle {
+        width: 100%;
+        margin: 5px 0;
+        height: 36px;
+    }
+    
+    .settings-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .settings-row label {
+        margin-bottom: 5px;
+    }
+    
+    .settings-row select,
+    .settings-row input {
+        width: 100%;
+    }
+    
+    .tagline-small {
+        margin-bottom: 10px;
+    }
+}
