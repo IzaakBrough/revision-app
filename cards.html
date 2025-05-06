@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revision App | Flashcards</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="cards.css">
     <script src="cards.js" defer></script>
 </head>
 <body>
@@ -20,7 +19,7 @@
                 </div>
                 <div class="button-group">
                     <button id="create-card-btn" class="action-button">Add Flashcard</button>
-                    <div id="flashcard-form" class="option-card">
+                    <div id="flashcard-form" class="dropdown-content hidden">
                         <h2>Create a Flashcard</h2>
                         <form id="create-card-form">
                             <div class="form-group">
@@ -41,7 +40,7 @@
                     </div>
                     
                     <button id="edit-cards-btn" class="action-button">✏️Cards</button>
-                    <div id="flashcard-list" class="option-card">
+                    <div id="flashcard-list" class="dropdown-content">
                         <h2>Your Flashcards</h2>
                         <div class="form-group">
                             <label for="edit-collection">Collection:</label>
@@ -80,7 +79,7 @@
             </div>
         </div>
 
-        <div id="app">
+        <div id="app" class="cards-app">
             <div id="card-container">
                 <div class="card">
                     <div class="card-front">

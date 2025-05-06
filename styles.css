@@ -1,3 +1,10 @@
+/* 
+   REVISION APP STYLESHEET
+   Consolidated from multiple CSS files
+   Last updated: May 6, 2025
+*/
+
+/* ===== GLOBAL STYLES ===== */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #5e892c;
@@ -6,13 +13,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    height: 100vh; /* Use height instead of min-height */
-    overflow: hidden; /* Prevent body scrolling */
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* Page header styling */
 .page-header {
-    background-color: #3a5a12; /* Darker green background */
+    background-color: #3a5a12; 
     padding: 20px 0 15px;
     margin-bottom: 20px;
     border-radius: 10px 10px 0 0;
@@ -29,19 +36,34 @@ body {
     margin-bottom: 20px;
 }
 
-/* Adjust container for the new header */
+/* Container styles */
 .container {
     width: 90%;
     max-width: 1000px;
     text-align: center;
     padding: 0;
     margin-top: 5px;
-    height: calc(100vh - 10px); /* Make container fill viewport height minus margins */
+    height: calc(100vh - 10px);
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevent container scrolling */
+    overflow: hidden;
 }
 
+/* App container styles */
+#app {
+    background-color: #5e892c;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Typography */
 h1 {
     color: white;
     margin-bottom: 10px;
@@ -55,19 +77,12 @@ h1 {
     font-size: 1.2rem;
 }
 
-#app {
-    background-color: #5e892c;
-    border-radius: 0 0 10px 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: 20px;
-    flex: 1;
-    overflow: hidden; /* Prevent app scrolling */
+.tagline-small {
+    margin-bottom: 15px;
+    font-size: 1rem;
 }
 
+/* Option cards (used on home page) */
 .option-card {
     background-color: white;
     border-radius: 10px;
@@ -92,6 +107,7 @@ h1 {
     color: #555;
 }
 
+/* Button styles */
 button {
     padding: 10px 20px;
     background-color: #3a5a12;
@@ -112,18 +128,7 @@ button:active {
     transform: translateY(2px);
 }
 
-@media (max-width: 768px) {
-    #app {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .option-card {
-        width: 90%;
-        max-width: 400px;
-    }
-}
-
+/* Navigation row styling */
 .nav-row {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -133,6 +138,7 @@ button:active {
     gap: 15px;
 }
 
+/* Home button styling */
 .home-button {
     background-color: rgba(255, 255, 255, 0.9);
     color: #3a5a12;
@@ -142,7 +148,6 @@ button:active {
     transition: background-color 0.3s;
     font-weight: bold;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Remove margin-bottom as it will be handled by the container */
     grid-column: 1;
     justify-self: start;
 }
@@ -152,7 +157,17 @@ button:active {
     transform: translateY(-2px);
 }
 
-/* Select dropdown styling */
+/* Button group styling - common across pages */
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    grid-column: 2;
+    align-items: center;
+    position: relative;
+}
+
+/* Collection select dropdown - common style */
 .collection-select {
     background-color: rgba(255, 255, 255, 0.9);
     color: #3a5a12;
@@ -162,11 +177,12 @@ button:active {
     cursor: pointer;
     font-weight: bold;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    grid-column: 4;
+    grid-column: 3;
     justify-self: end;
     transition: background-color 0.3s, transform 0.3s;
     outline: none;
     min-width: 120px;
+    height: 40px;
 }
 
 .collection-select:hover {
@@ -189,8 +205,517 @@ button:active {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Added for flex container of resource cards */
+/* Common action button styling */
+.action-button {
+    background-color: #3a5a12;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-button:hover {
+    background-color: #4d7719;
+    transform: translateY(-2px);
+}
+
+.action-button:active {
+    transform: translateY(1px);
+}
+
+/* Common dropdown styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: white;
+    min-width: 250px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.dropdown-content.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f9f9f9;
+}
+
+.dropdown-item span {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.dropdown-item small {
+    display: block;
+    color: #666;
+    font-size: 0.8rem;
+}
+
+/* Common form styling */
+.form-group {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+/* Message styling for feedback */
+#message {
+    margin-top: 10px;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* ===== CARDS PAGE STYLES ===== */
+/* Container styling for cards page */
+#app.cards-app {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Card container styling */
+#card-container {
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    perspective: 1000px;
+    margin: 20px 0;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    cursor: pointer;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    text-align: center;
+}
+
+.card-front {
+    background-color: #f9f9f9;
+}
+
+.card-back {
+    background-color: #f0f7e6;
+    transform: rotateY(180deg);
+}
+
+.card p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* Card hint styling */
+.card-hint {
+    font-size: 0.9rem;
+    color: #666;
+    margin-left: 10px;
+    align-self: center;
+}
+
+/* Flashcard form styling */
+#flashcard-form {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: none;
+}
+
+#flashcard-form.show {
+    display: block;
+}
+
+#flashcard-form input,
+#flashcard-form select {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#flashcard-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #3a5a12;
+}
+
+#flashcard-form button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background-color: #3a5a12;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#flashcard-form button:hover {
+    background-color: #4b7218;
+}
+
+/* Flashcard list styling */
+#flashcard-list {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+    padding: 0;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: none;
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+}
+
+#flashcard-list.show {
+    display: block;
+}
+
+#flashcard-list h2 {
+    margin-top: 0;
+    color: #3a5a12;
+    padding: 20px 20px 10px 20px;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+}
+
+/* Form group in flashcard list */
+#flashcard-list .form-group {
+    background-color: white;
+    padding: 0 20px 15px 20px;
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Scrollable container for flashcard items */
+#flashcard-list-container {
+    height: calc(100% - 120px);
+    overflow-y: auto;
+    padding: 20px 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-right: calc(20px + 10px);
+}
+
+/* Create a pseudo-element to provide bottom padding that's always visible */
+#flashcard-list-container::after {
+    content: '';
+    display: block;
+    height: 60px;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+/* Editable card styling */
+.editable-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s;
+    overflow: visible;
+    margin-bottom: 15px;
+    position: relative;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.editable-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+#flashcard-list-container .editable-card:last-of-type {
+    margin-bottom: 30px;
+}
+
+/* Empty state message positioning */
+.empty-collection-message {
+    text-align: center;
+    color: #666;
+    padding: 30px 0;
+    font-style: italic;
+}
+
+/* Controls styling */
+.controls {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.export-import-controls {
+    margin-top: 10px;
+}
+
+/* Card view styling */
+.card-view {
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+}
+
+.card-question {
+    font-weight: bold;
+    color: #3a5a12;
+    margin-right: 20px;
+    flex: 1 1 45%;
+    min-width: 200px;
+}
+
+.card-answer {
+    color: #444;
+    flex: 1 1 45%;
+    min-width: 200px;
+}
+
+.collection-tag {
+    background-color: #f0f7e6;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #3a5a12;
+    margin-right: 15px;
+    align-self: flex-start;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.edit-button,
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+    background-color: #f0f7e6;
+}
+
+.delete-button:hover {
+    background-color: #ffebeb;
+}
+
+/* Card edit form with proper z-index */
+.card-edit-form {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    position: relative;
+    z-index: 5;
+}
+
+.card-edit-form input,
+.card-edit-form select {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+    position: relative;
+    z-index: 3;
+}
+
+.save-button,
+.cancel-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    min-width: 80px;
+}
+
+.save-button {
+    background-color: #3a5a12;
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #4b7218;
+}
+
+.cancel-button {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.cancel-button:hover {
+    background-color: #e6e6e6;
+}
+
+/* Import/export area */
+#drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+    transition: all 0.3s;
+}
+
+#drop-area.highlight {
+    border-color: #3a5a12;
+    background-color: rgba(58, 90, 18, 0.1);
+}
+
+#drop-area p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* ===== RESOURCES PAGE STYLES ===== */
+/* Resource card styling */
+.resource-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.resource-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.resource-card h3 {
+    color: #3a5a12;
+    margin-top: 0;
+    font-size: 1.3rem;
+}
+
+.resource-card p {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.resource-card .resource-link {
+    color: #3a5a12;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.resource-card .resource-link:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+.resource-icon {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #3a5a12;
+}
+
+/* Improve scrollable resources container */
 .resources-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    scrollbar-width: thin;
+    max-height: unset;
+    height: 100%;
+    padding-bottom: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -198,12 +723,1003 @@ button:active {
     width: 100%;
 }
 
+/* Custom scrollbar styling */
+.resources-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.resources-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.resources-container::-webkit-scrollbar-thumb {
+    background: #3a5a12;
+    border-radius: 10px;
+}
+
+.resources-container::-webkit-scrollbar-thumb:hover {
+    background: #4d7719;
+}
+
+/* ===== SPECIFICATION PAGE STYLES ===== */
+/* Progress bar styling */
+.progress-container {
+    width: 150px;
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 10px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 10px;
+    transition: width 0.3s ease-in-out;
+}
+
+.progress-text {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+/* Specification sections */
+.specification-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto; /* Changed from "20px 0" to center it */
+    padding: 5px 15px;
+    border-radius: 10px;
+    background-color: #5e892c;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Added for better centering of content */
+}
+
+.subject-container {
+    margin-bottom: 30px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    margin-top: 20px;
+    width: 100%; /* Added to ensure full width */
+    max-width: 780px; /* Added to match parent container while allowing for padding */
+}
+
+.subject-header {
+    background-color: #3a5a12;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.subject-header:hover {
+    background-color: #4d7719;
+}
+
+.subject-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.subject-header h2 a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: inline-block;
+    position: relative;
+}
+
+.subject-header h2 a:hover {
+    color: #e1f0cc;
+}
+
+.subject-header h2 a:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: #e1f0cc;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s;
+}
+
+.subject-header h2 a:hover:after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.subject-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.subject-content {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    background-color: white;
+}
+
+.subject-content.expanded {
+    max-height: 2000px;
+    transition: max-height 1s ease-in;
+}
+
+/* Topic styling */
+.topic-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.topic-item {
+    border-bottom: 1px solid #eee;
+    padding: 0;
+    transition: background-color 0.3s;
+}
+
+.topic-item:last-child {
+    border-bottom: none;
+}
+
+.topic-header {
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.topic-header:hover {
+    background-color: #f9f9f9;
+}
+
+.topic-name {
+    font-weight: bold;
+    color: #333;
+    flex: 1;
+}
+
+.topic-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.topic-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.topic-details {
+    display: none;
+    background-color: #f9f9f9;
+}
+
+.topic-item.expanded .topic-details {
+    display: block;
+    padding: 15px 20px;
+    max-height: none; /* Override max-height constraints */
+    overflow: visible; /* Allow content to be fully visible */
+}
+
+.topic-description {
+    margin: 0;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.topic-resources {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #ddd;
+}
+
+.topic-resources h4 {
+    margin: 0 0 5px 0;
+    color: #3a5a12;
+    font-size: 0.9rem;
+}
+
+.resources-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.resources-list li {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.resources-list a {
+    color: #3a5a12;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.resources-list a:hover {
+    color: #4d7719;
+    text-decoration: underline;
+}
+
+/* Add specification form */
+#specification-form {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: none;
+}
+
+#specification-form.show {
+    display: block;
+}
+
+#specification-form input,
+#specification-form select,
+#specification-form textarea {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#specification-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+#specification-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #3a5a12;
+}
+
+#specification-form button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background-color: #3a5a12;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#specification-form button:hover {
+    background-color: #4b7218;
+}
+
+/* Empty state styling */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.empty-state p {
+    margin: 10px 0;
+}
+
+.empty-state button {
+    margin-top: 15px;
+    background-color: #3a5a12;
+    color: white;
+}
+
+/* Topic notes styling */
+.topic-notes {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #ddd;
+}
+
+.topic-notes h4 {
+    margin: 0 0 5px 0;
+    color: #3a5a12;
+    font-size: 0.9rem;
+}
+
+.notes-content {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #333;
+    white-space: pre-line;
+}
+
+.add-topic-notes {
+    margin-top: 10px;
+    background-color: #f0f7e6;
+    color: #3a5a12;
+    border: 1px solid #c5e0b4;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.add-topic-notes:hover {
+    background-color: #3a5a12;
+    color: white;
+}
+
+/* Modal styling */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    padding: 15px 20px;
+    background-color: #3a5a12;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 1.4rem;
+}
+
+.close-modal {
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.close-modal:hover {
+    transform: scale(1.2);
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-body textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #ddd;
+}
+
+/* Settings dropdown enhanced styles */
+#settings.dropdown-content {
+    min-width: 300px;
+    padding: 15px;
+    right: 0;
+    z-index: 1001;
+}
+
+#settings.dropdown-content h2 {
+    margin-top: 0;
+    color: #3a5a12;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+#settings.dropdown-content.show {
+    display: block;
+}
+
+.edit-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.edit-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.edit-item:last-child {
+    border-bottom: none;
+}
+
+.edit-item span {
+    flex: 1;
+    font-size: 0.9rem;
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.edit-btn, 
+.delete-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.edit-btn {
+    background-color: #f0f7e6;
+    color: #3a5a12;
+}
+
+.edit-btn:hover {
+    background-color: #c5e0b4;
+}
+
+.delete-btn {
+    background-color: #f8e6e6;
+    color: #c53030;
+}
+
+.delete-btn:hover {
+    background-color: #f8d7d7;
+}
+
+.export-import-container {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.export-import-container h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #3a5a12;
+    font-size: 1rem;
+}
+
+.settings-button {
+    background-color: #3a5a12;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.settings-button:hover {
+    background-color: #4d7719;
+}
+
+/* Success and error messages */
+.success-message,
+.error-message {
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.success-message {
+    background-color: #c5e0b4;
+    color: #3a5a12;
+}
+
+.error-message {
+    background-color: #f8d7d7;
+    color: #c53030;
+}
+
+/* Topic items expanded state */
+.topic-item.expanded .topic-details {
+    display: block;
+    padding: 15px 20px;
+}
+
+.topic-details {
+    display: none;
+}
+
+/* Progress bar styling */
+.progress-container {
+    width: 150px;
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 10px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 10px;
+    transition: width 0.3s ease-in-out;
+}
+
+.progress-text {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+/* Specifications scrollable container */
+.specifications-scroll-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    scrollbar-width: thin;
+    max-height: calc(100vh - 300px);
+    width: 100%;
+}
+
+/* Subtopic styling */
+.subtopics-container {
+    margin-top: 12px;
+    border-top: 1px dashed #ddd;
+    padding-top: 10px;
+}
+
+.subtopics-container h4 {
+    margin: 0 0 8px 0;
+    color: #3a5a12;
+    font-size: 0.9rem;
+}
+
+.subtopic-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 0 10px;
+}
+
+.subtopic-item {
+    padding: 0;
+    margin-bottom: 8px;
+    border-left: 2px solid #e0e0e0;
+    padding-left: 10px;
+}
+
+.subtopic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.subtopic-header:hover {
+    background-color: #e8e8e8;
+}
+
+.subtopic-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #444;
+}
+
+.subtopic-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.subtopic-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.subtopic-details {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+.subtopic-details.expanded {
+    padding: 8px 10px;
+    max-height: 300px;
+    transition: max-height 0.4s ease-in, padding 0.3s ease;
+}
+
+/* Subsubtopic styling */
+.subsubtopic-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 0 10px;
+}
+
+.subsubtopic-item {
+    padding: 0;
+    margin-bottom: 6px;
+}
+
+.subsubtopic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.subsubtopic-header:hover {
+    background-color: #e5e5e5;
+}
+
+.subsubtopic-name {
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.subsubtopic-status {
+    display: flex;
+    align-items: center;
+}
+
+.subsubtopic-checkbox {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+/* Subtopic count badge */
+.subtopic-count {
+    font-size: 0.75rem;
+    background-color: #f0f7e6;
+    color: #3a5a12;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-right: 8px;
+}
+
+/* ===== AI PAGE STYLES ===== */
+/* Chat container styling */
+#chat-container {
+    width: 100%;
+    max-width: 800px;
+    height: 450px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0 20px;
+    overflow: hidden;
+}
+
+/* Chat messages area */
+#chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #f9f9f9;
+}
+
+/* Input area styling */
+#chat-input-area {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #eee;
+    background-color: white;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+    margin-right: 10px;
+}
+
+#chat-input:focus {
+    border-color: #3a5a12;
+    box-shadow: 0 0 0 2px rgba(58, 90, 18, 0.1);
+}
+
+/* Send button styled as action button */
+#send-button {
+    padding: 0 20px;
+    background-color: #3a5a12;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#send-button:hover {
+    background-color: #4d7719;
+    transform: translateY(-2px);
+}
+
+#send-button:active {
+    transform: translateY(1px);
+}
+
+/* Message styling */
+.message {
+    padding: 12px 15px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: #e1f0cc;
+    color: #333;
+}
+
+.ai-message {
+    align-self: flex-start;
+    background-color: white;
+    color: #333;
+    border: 1px solid #eee;
+}
+
+/* Message with typing animation */
+.typing {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #3a5a12;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: typing-animation 1s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing-animation {
+    0%, 100% { opacity: 0.6; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-5px); }
+}
+
+/* Topic buttons styling */
+.topic-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.topic-button {
+    padding: 8px 15px;
+    background-color: #3a5a12;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+}
+
+/* Info panel styling */
+.info-panel {
+    background-color: #f0f7e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    width: 100%;
+    max-width: 800px;
+}
+
+.info-panel h3 {
+    color: #3a5a12;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.info-panel p {
+    color: #444;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Settings panel */
+#ai-settings {
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+    position: relative;
+    z-index: 100;
+}
+
+#ai-settings h3 {
+    color: #3a5a12;
+    margin-top: 0;
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.settings-row label {
+    margin-right: 10px;
+    min-width: 120px;
+}
+
+.settings-row select,
+.settings-row input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+}
+
+/* Message with formatted code */
+.message pre {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+.message code {
+    font-family: monospace;
+}
+
+/* Clear chat button - also styled as action button but with different colors */
+#clear-chat {
+    background-color: transparent;
+    color: #666;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+    margin-left: 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#clear-chat:hover {
+    background-color: #f9f9f9;
+    color: #333;
+    transform: translateY(-2px);
+}
+
+#clear-chat:active {
+    transform: translateY(1px);
+}
+
+/* Settings toggle button styled as action button */
+#settings-toggle {
+    background-color: #3a5a12;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
-    .page-header {
-        padding: 15px 0 10px;
-    }
-    
-    .resources-container {
+    /* Global responsive adjustments */
+    #app {
         flex-direction: column;
         align-items: center;
     }
@@ -211,5 +1727,204 @@ button:active {
     .option-card {
         width: 90%;
         max-width: 400px;
+    }
+    
+    .page-header {
+        padding: 15px 0 10px;
+    }
+    
+    /* Navigation responsive adjustments */
+    .nav-row {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 10px;
+    }
+    
+    .button-group {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .home-button {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: center;
+    }
+    
+    .collection-select {
+        grid-column: 1;
+        grid-row: 3;
+        justify-self: center;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .dropdown {
+        grid-column: 1;
+        grid-row: 4;
+        width: 100%;
+        justify-self: center;
+    }
+    
+    .dropdown-content {
+        left: 0;
+        right: 0;
+        width: 100%;
+        position: relative;
+    }
+    
+    /* Cards page responsive adjustments */
+    #card-container {
+        height: 250px;
+    }
+    
+    #flashcard-form,
+    #flashcard-list,
+    #specification-form {
+        position: fixed;
+        top: 140px;
+        left: 5%;
+        width: 90%;
+        transform: none;
+        max-height: calc(80vh - 70px);
+        overflow-y: auto;
+    }
+    
+    #flashcard-list-container {
+        height: calc(100% - 140px);
+        padding-right: 20px;
+    }
+    
+    #flashcard-list-container::after {
+        height: 80px;
+    }
+    
+    #flashcard-list-container .editable-card:last-of-type {
+        margin-bottom: 40px;
+    }
+
+    .card-view {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .card-question,
+    .card-answer {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .card-actions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+    
+    .collection-tag {
+        margin-bottom: 10px;
+    }
+
+    .card-edit-form {
+        padding: 12px;
+    }
+
+    .form-buttons {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .save-button,
+    .cancel-button {
+        flex: 1;
+        margin-top: 5px;
+        text-align: center;
+    }
+
+    .empty-collection-message {
+        padding: 20px 0;
+    }
+    
+    /* Resources page responsive adjustments */
+    .resource-card {
+        width: 100%;
+    }
+    
+    .resources-container {
+        max-height: unset;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Specification page responsive adjustments */
+    .subject-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .subject-progress {
+        width: 100%;
+        margin-top: 10px;
+        justify-content: space-between;
+    }
+    
+    .topic-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .topic-status {
+        width: 100%;
+        margin-top: 8px;
+        justify-content: flex-end;
+    }
+    
+    /* AI page responsive adjustments */
+    #chat-container {
+        height: 400px;
+    }
+    
+    .message {
+        max-width: 90%;
+    }
+
+    .topic-buttons {
+        flex-direction: row;
+        padding: 0;
+        margin: 5px 0;
+        width: 100%;
+    }
+    
+    .topic-button {
+        font-size: 14px;
+        padding: 6px 10px;
+        flex: 1;
+        text-align: center;
+        min-width: 0;
+        height: 36px;
+    }
+    
+    #settings-toggle {
+        width: 100%;
+        margin: 5px 0;
+        height: 36px;
+    }
+    
+    .settings-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .settings-row label {
+        margin-bottom: 5px;
+    }
+    
+    .settings-row select,
+    .settings-row input {
+        width: 100%;
+    }
+    
+    .tagline-small {
+        margin-bottom: 10px;
     }
 }
